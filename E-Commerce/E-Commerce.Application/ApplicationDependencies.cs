@@ -1,4 +1,6 @@
-﻿using E_Commerce.Application.Services.AuthServices;
+﻿using E_Commerce.Application.Mappers;
+using E_Commerce.Application.Services.AuthServices;
+using E_Commerce.Application.Services.CartServices;
 using E_Commerce.Application.Services.ProductServices;
 using E_Commerce.Application.Services.RolesService;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,12 @@ namespace E_Commerce.Application
             services.AddTransient(typeof(IProductService),typeof(ProductService));
             services.AddTransient(typeof(IAuthService), typeof(AuthService));
             services.AddTransient(typeof(IRoleService), typeof(RoleService));
+            services.AddTransient(typeof(ICartService), typeof(CartService));
+
+            //Register Mapper Profiles
+            services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
+            services.AddAutoMapper(M => M.AddProfile(new CartItemProfile()));
+
 
 
             return services;

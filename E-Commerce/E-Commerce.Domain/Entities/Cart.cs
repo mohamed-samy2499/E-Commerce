@@ -15,5 +15,6 @@ namespace E_Commerce.Domain.Entities
         //Relations
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
+        public List<CartItem> CartItems { get; set; } = [];
     }
 }

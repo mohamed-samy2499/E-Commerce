@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Application.Services.AuthServices;
 using E_Commerce.Application.Services.ProductServices;
+using E_Commerce.Application.Services.RolesService;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace E_Commerce.Application
             //Register My Services
             services.AddTransient(typeof(IProductService),typeof(ProductService));
             services.AddTransient(typeof(IAuthService), typeof(AuthService));
+            services.AddTransient(typeof(IRoleService), typeof(RoleService));
+
 
             return services;
         }

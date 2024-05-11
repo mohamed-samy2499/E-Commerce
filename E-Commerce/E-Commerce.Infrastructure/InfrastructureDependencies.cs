@@ -2,6 +2,7 @@
 using E_Commerce.Infrastructure.Repositories.CartItemRepositories;
 using E_Commerce.Infrastructure.Repositories.CartRepositories;
 using E_Commerce.Infrastructure.Repositories.ProductRepositories;
+using E_Commerce.Infrastructure.UnitOfWorks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace E_Commerce.Infrastructure
             services.AddTransient(typeof(IProductRepository),typeof(ProductRepository));
             services.AddTransient(typeof(ICartRepository), typeof(CartRepository));
             services.AddTransient(typeof(ICartItemRepository), typeof(CartItemRepository));
+            services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
+
 
             return services;
         }

@@ -1,4 +1,5 @@
-﻿using E_Commerce.Application.Services.ProductServices;
+﻿using E_Commerce.Application.Services.AuthServices;
+using E_Commerce.Application.Services.ProductServices;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace E_Commerce.Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             //Register My Services
             services.AddTransient(typeof(IProductService),typeof(ProductService));
+            services.AddTransient(typeof(IAuthService), typeof(AuthService));
+
             return services;
         }
     }

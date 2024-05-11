@@ -1,0 +1,33 @@
+﻿using FluentValidation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace E_Commerce.Application.DTOs.AuthDTOs.AuthDTOsValidators
+{
+    public class RegisterDTOValidator:AbstractValidator<RegisterDTO>
+    {
+        public RegisterDTOValidator()
+        {
+
+            RuleFor(x => x.UserName)
+             .NotEmpty().WithMessage("User Name is required")
+             .MinimumLength(3).WithMessage("Minimum length of User Name is 3 chars");
+
+            RuleFor(x => x.Email)
+              .NotEmpty().WithMessage("Email is required")
+              .EmailAddress().WithMessage("Invalid Email");
+
+            RuleFor(x => x.Password)
+                .NotEmpty().WithMessage("Password is required")
+                .MinimumLength(4).WithMessage("Minimum length of password is 4 chars");
+
+            RuleFor(x => x.ConfirmPassword)
+                .NotEmpty().WithMessage("Confirm password is required")
+                .MinimumLength(4).WithMessage("Minimum length of password is 4 chars")
+                .Equal(x => x.Password).WithMessage("Confirm Password doesn't match the password");
+        }
+    }
+}

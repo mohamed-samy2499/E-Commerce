@@ -1,5 +1,8 @@
 ﻿using E_Commerce.Application.DTOs.AuthDTOs;
+using E_Commerce.Application.DTOs.AuthDTOs.AuthDTOsValidators;
 using E_Commerce.Application.Services.RolesService;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +10,7 @@ namespace E_Commerce.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "ADMIN")]
     public class RolesController(IRoleService roleService)
         :ControllerBase
     {
@@ -94,7 +98,7 @@ namespace E_Commerce.Api.Controllers
             return BadRequest(ModelState);
         }
         //get a list of all users and showing wether each user is selected within this role or  not 
-        [HttpGet("AddOrRemoveUsers/{RoleId}")]
+        [HttpGet("AddOrRemoveUsers/{roleId}")]
         public async Task<IActionResult> AddOrRemoveUsers(string roleId)
         {
             if (roleId == null)
@@ -111,16 +115,32 @@ namespace E_Commerce.Api.Controllers
         }
         //Assigning or removing users from a role
 
-        [HttpPut("AddOrRemoveUsers/{RoleId}")]
+        [HttpPut("AddOrRemoveUsers/{roleId}")]
         public async Task<IActionResult> AddOrRemoveUsers(List<UserInRoleDTO> model, string roleId)
         {
-            if (ModelState.IsValid)
+            try
             {
+                foreach(var item in model)
+                    // Validate DTO using FluentValidation
+                    new UserInRoleDTOValidator().ValidateAndThrow(item);
                 var result = await _roleService.AssignRoleToUsersAsync(model, roleId);
                 if (result)
                     return Ok();
+                return BadRequest();
             }
-            return BadRequest(ModelState);
+            catch(FluentValidation.ValidationException ex)
+            {
+                //// Handle validation errors
+                foreach (var error in ex.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+                return BadRequest(ModelState);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using E_Commerce.Application.Services.ProductServices;
 using E_Commerce.Application.Validators.ProductValidators;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
@@ -61,6 +62,7 @@ namespace E_Commerce.Api.Controllers
         #endregion
         #region Queries Endpoints
         // /Products/Create
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductAddDTO model)
         {
@@ -93,6 +95,7 @@ namespace E_Commerce.Api.Controllers
         }
 
         // /Products/Update/5
+        [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateDTO model)
         {
@@ -129,6 +132,7 @@ namespace E_Commerce.Api.Controllers
         }
 
         // /Products/Delete/5
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

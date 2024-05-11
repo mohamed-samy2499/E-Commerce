@@ -4,6 +4,7 @@ using E_Commerce.Application.Services.AuthServices;
 using E_Commerce.Application.Validators.ProductValidators;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,6 +17,7 @@ namespace E_Commerce.Api.Controllers
         private readonly IAuthService _authService = authService;
 
         //Seed The Roles "ADMIN" "USER" API
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         [Route("seed-roles")]
         public async Task<IActionResult> SeedRoles()
